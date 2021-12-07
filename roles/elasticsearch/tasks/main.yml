@@ -25,13 +25,13 @@
     update_cache: true
 
 - name: Configure Elastic vote node
-  when: inventory_hostname in groups['elk_primus_master']
+  when: inventory_hostname in groups['elk_master']
   template:
     src: templates/elastic-vote.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
 
 - name: Configure Elastic data nodes
-  when: inventory_hostname in groups['elk_primus_worker']
+  when: inventory_hostname in groups['elk_worker']
   template:
     src: templates/elastic-main.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
