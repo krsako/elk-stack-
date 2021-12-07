@@ -1,0 +1,20 @@
+---
+- name: Install Metricbeat
+  package:
+    name: metricbeat
+    state: present
+
+- name: Configure metricbeat.yml file
+  template:
+    src: templates/metricbeat.yml.j2
+    dest: /etc/metricbeat/metricbeat.yml
+
+- name: Enable stack monitoring module
+  when: inventory_hostname in groups['elk_primus']
+  shell: metricbeat modules enable elasticsearch-xpack
+
+- name: Start Metricbeat service
+  systemd:
+    name: metricbeat
+    state: started
+    enabled: yes

@@ -1,0 +1,20 @@
+---
+- name: Install Kibana
+  package:
+    name: kibana
+    state: present
+    update_cache: true
+
+- name: Configure kibana.yml file
+  template:
+    src: templates/kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+
+- name: Open Kibana firewall ports
+  shell: firewall-cmd --add-port=5601/tcp --permanent && firewall-cmd --reload
+
+- name: Start Kibana service
+  systemd:
+    name: kibana
+    state: started
+    enabled: yes

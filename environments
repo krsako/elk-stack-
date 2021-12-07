@@ -1,0 +1,31 @@
+---
+
+elk_master:
+  hosts:
+    master01:
+      ansible_host: 192.168.99.101
+
+elk_worker:
+  hosts:
+    worker01:
+      ansible_host: 192.168.99.102
+    worker02:
+      ansible_host: 192.168.99.103
+
+elk_cluster:
+  children:
+    elk_master:
+    elk_worker:
+  vars:
+    ansible_ssh_user: root
+    ansible_ssh_pass: !vault |
+              $ANSIBLE_VAULT;1.2;AES256;elk
+              30323535373137303432303861356135636239343235363066356434353139366133616665383330
+              3366333531623263306338663537333431626432643532610a363963323662613836616662323637
+              34623339373931393163306635636635333835626466336662346334383031303862653338373233
+              3263643166643663650a323761613461663564343461633065343663343532323838306236623264
+              6339
+
+elk_group:
+  children:
+    elk_cluster:

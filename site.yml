@@ -1,0 +1,30 @@
+---
+- name: elastic install
+  hosts: elk_cluster
+  become: true
+  roles:
+    - elasticsearch
+
+- name: install kibana
+  hosts: elk_master
+  become: true
+  roles:
+    - kibana
+
+- name: install metricbeat
+  hosts: elk_cluster
+  become: true
+  roles:
+    - metricbeat
+
+- name: install filebeat
+  hosts: elk_cluster
+  become: true
+  roles:
+    - filebeat
+
+- name: load initial kibana dashboards
+  hosts: elk_master
+  become: true
+  roles:
+    - kibana-dashboards

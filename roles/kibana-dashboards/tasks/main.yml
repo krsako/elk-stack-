@@ -1,0 +1,8 @@
+---
+- name: Load initial dashboards in kibana
+  when: inventory_hostname in groups['elk_primus_master']
+  shell: metricbeat setup -e
+
+- name: Load initial dashboards in kibana
+  when: inventory_hostname in groups['elk_primus_master']
+  shell: filebeat setup -e
