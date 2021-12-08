@@ -25,21 +25,16 @@
     update_cache: true
 
 - name: Configure Elastic vote node
-  when: inventory_hostname in groups['elk_master']
+  when: inventory_hostname in groups['{{ master_hostname }}']
   template:
     src: templates/elastic-vote.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
 
 - name: Configure Elastic data nodes
-  when: inventory_hostname in groups['elk_worker']
+  when: inventory_hostname in groups['{{ worker_hostname }}']
   template:
     src: templates/elastic-main.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
-
-# - name: Configure JVM heap size
-#   template:
-#     src: templates/jvm-heap-2g.j2
-#     dest: /etc/elasticsearch/jvm.options.d/jvm-options
 
 - name: Open firewall ports
   shell: firewall-cmd --add-port={9200/tcp,9300/tcp} --permanent && firewall-cmd --reload

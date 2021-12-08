@@ -6,3 +6,5 @@ kibana_host: 192.168.99.101
 kibana_elastic_hosts: '"http://192.168.99.101:9200", "http://192.168.99.102:9200", "http://192.168.99.103:9200"'
 # Configured only the nodes as master/data
 logs_elastic_nodes: '"192.168.99.102:9200", "192.168.99.103:9200"'
+master_hostname: elk_master
+worker_hostname: elk_worker
