@@ -1,0 +1,30 @@
+---
+- name: Install NFS server
+  yum:
+    name: nfs-utils nfs4-acl-tools
+    state: present
+    update_cache: true
+
+- name: Create share directory
+  file:
+    state: directory
+    path: "{{ share_path }}"
+    owner: "elasticsearch"
+    group: "elasticsearch"
+
+- name: Mount remote repo
+  shell: mount {{ nfs_server }}:{{ share_path }} {{ share_path }}
+
+- name: Enable mount to persistent
+  shell: echo "{{ nfs_server }}:{{ share_path }} {{ share_path }} nfs4 rw,_netdev,tcp 0 0">>/etc/fstab
+
+- name: Configure elasticsearch.yml repo path
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    line: 'path.repo: ["{{ share_path }}"]'
+    insertafter: EOF
+
+- name: Restart Elasticsearch service
+  systemd:
+    name: elasticsearch
+    state: restarted

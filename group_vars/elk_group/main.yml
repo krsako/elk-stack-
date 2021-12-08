@@ -1,10 +1,16 @@
 ---
 # ELK variables for all nodes
 elastic_cluster_name: elk-cluster
-elastic_nodes: '"192.168.99.101", "192.168.99.102", "192.168.99.103"'
-kibana_host: 192.168.99.101
-kibana_elastic_hosts: '"http://192.168.99.101:9200", "http://192.168.99.102:9200", "http://192.168.99.103:9200"'
+elastic_nodes: '"10.0.2.4", "10.0.2.5", "10.0.2.6"'
+kibana_host: 10.0.2.4
+kibana_elastic_hosts: '"http://10.0.2.4:9200", "http://10.0.2.5:9200", "http://10.0.2.6:9200"'
 # Configured only the nodes as master/data
-logs_elastic_nodes: '"192.168.99.102:9200", "192.168.99.103:9200"'
-master_hostname: elk_master
-worker_hostname: elk_worker
+logs_elastic_nodes: '"10.0.2.5:9200", "10.0.2.6:9200"'
+group_hostname: ['elk_cluster']
+master_hostname: ['elk_master']
+worker_hostname: ['elk_worker']
+# NFS share clients
+nfs_server: 10.0.2.4
+nfs_client_1: 10.0.2.5
+nfs_client_2: 10.0.2.6
+share_path: /mnt/elasticshare

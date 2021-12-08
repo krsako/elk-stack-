@@ -28,3 +28,9 @@
   become: true
   roles:
     - kibana-dashboards
+
+- name: enable nfs repo
+  hosts: elk_cluster
+  become: true
+  roles:
+    - elastic-nfs-share

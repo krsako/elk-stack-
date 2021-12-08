@@ -1,0 +1,5 @@
+---
+- name: Configure Elastic vote node
+  template:
+    src: templates/elastic-vote.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml

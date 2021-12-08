@@ -1,9 +1,4 @@
 ---
-- name: Perform yum update of all packages
-  yum:
-    name: '*'
-    state: latest
-
 - name: Import Elastic GPG Key
   rpm_key:
     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -24,17 +19,19 @@
     state: present
     update_cache: true
 
-- name: Configure Elastic vote node
-  when: inventory_hostname in groups['{{ master_hostname }}']
-  template:
-    src: templates/elastic-vote.yml.j2
-    dest: /etc/elasticsearch/elasticsearch.yml
+- include: master.yml
+  when: inventory_hostname in groups[item]
+  with_items: "{{ master_hostname}}"
+  
+- include: worker.yml
+  when: inventory_hostname in groups[item]
+  with_items: "{{ worker_hostname}}"
 
-- name: Configure Elastic data nodes
-  when: inventory_hostname in groups['{{ worker_hostname }}']
-  template:
-    src: templates/elastic-main.yml.j2
-    dest: /etc/elasticsearch/elasticsearch.yml
+- name: Enable firewalld service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
 
 - name: Open firewall ports
   shell: firewall-cmd --add-port={9200/tcp,9300/tcp} --permanent && firewall-cmd --reload

@@ -1,0 +1,38 @@
+---
+- name: Install NFS server
+  yum:
+    name: nfs-utils
+    state: present
+    update_cache: true
+
+- name: Enable NFS service
+  systemd:
+    name: nfs-server
+    state: started
+    enabled: yes
+
+- name: Create share directory
+  file:
+    state: directory
+    path: "{{ share_path }}"
+    owner: "elasticsearch"
+    group: "elasticsearch"
+
+- name: Add hosts to /etc/exports
+  shell: |
+    echo "{{ share_path }} {{ nfs_client_1 }}(rw,sync,no_root_squash,no_subtree_check)
+    {{ share_path }} {{ nfs_client_2 }}(rw,sync,no_root_squash,no_subtree_check)" >> /etc/exports
+
+- name: Open firewall ports
+  shell: firewall-cmd --add-service={nfs,rpc-bind,mountd} --permanent && firewall-cmd --reload
+
+- name: Configure elasticsearch.yml repo path
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    line: 'path.repo: ["{{ share_path }}"]'
+    insertafter: EOF
+
+- name: Restart Elasticsearch service
+  systemd:
+    name: elasticsearch
+    state: restarted
