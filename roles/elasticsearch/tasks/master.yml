@@ -1,5 +1,5 @@
 ---
-- name: Configure Elastic vote node
+- name: Configure elastic master node
   template:
-    src: templates/elastic-vote.yml.j2
+    src: templates/elastic-master.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml

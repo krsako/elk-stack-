@@ -2,7 +2,13 @@
 - include: master.yml
   when: inventory_hostname in groups[item]
   with_items: "{{ master_hostname}}"
+  tags:
+    - nfs-all
+    - nfs-server
 
 - include: worker.yml
   when: inventory_hostname in groups[item]
   with_items: "{{ worker_hostname}}"
+  tags:
+    - nfs-all
+    - nfs-client

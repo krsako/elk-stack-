@@ -1,5 +1,5 @@
 ---
-- name: Configure Elastic data nodes
+- name: Configure elastic worker nodes
   template:
-    src: templates/elastic-vote.yml.j2
+    src: templates/elastic-worker.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml

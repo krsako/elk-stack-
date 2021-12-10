@@ -1,7 +1,7 @@
 ---
 - name: Install Metricbeat
   package:
-    name: metricbeat
+    name: "{{ metricbeat_version }}"
     state: present
 
 - name: Configure metricbeat.yml file
@@ -10,12 +10,20 @@
     dest: /etc/metricbeat/metricbeat.yml
 
 - name: Enable stack monitoring module
+<<<<<<< HEAD
   when: inventory_hostname in groups[item]
+=======
+  when: inventory_hostname in groups['elk_prod']   #TODO convert this on variable dependend on stage
+>>>>>>> 2c25b35fbb8d41e5c2e19b2f4f0bf2fad8bfe901
   shell: metricbeat modules enable elasticsearch-xpack
   with_items: "{{ group_hostname}}"
+
+- name: Enable linux system module 
+  when: inventory_hostname in groups ['test_akshi']
+  shell: metricbeat modules enable system
 
 - name: Start Metricbeat service
   systemd:
     name: metricbeat
-    state: started
+    state: started 
     enabled: yes

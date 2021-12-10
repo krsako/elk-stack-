@@ -13,9 +13,9 @@
     gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     enabled: yes
 
-- name: Install Elastic
-  yum:
-    name: elasticsearch
+- name: Install elastic master node
+  package:
+    name: "{{ elastic_version }}"
     state: present
     update_cache: true
 

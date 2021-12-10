@@ -1,10 +1,10 @@
 ---
 - name: Load initial dashboards in kibana
   when: inventory_hostname in groups[item]
-  shell: metricbeat setup -e
+  command: metricbeat setup -e
   with_items: "{{ master_hostname}}"
 
 - name: Load initial dashboards in kibana
   when: inventory_hostname in groups[item]
-  shell: filebeat setup -e
+  command: filebeat setup -e
   with_items: "{{ master_hostname}}"

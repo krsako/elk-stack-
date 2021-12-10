@@ -1,7 +1,7 @@
 ---
 - name: Install Kibana
   package:
-    name: kibana
+    name: "{{ kibana_version }}"
     state: present
     update_cache: true
 

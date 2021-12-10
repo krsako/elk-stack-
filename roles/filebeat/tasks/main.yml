@@ -1,7 +1,7 @@
 ---
 - name: Install Filebeat
   package:
-    name: filebeat
+    name: "{{ filebeat_version }}"
     state: present
 
 - name: Configure filebeat.yml file
